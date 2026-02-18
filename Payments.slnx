@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="app_secrets.txt" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="Payments.Api/Payments.Api.csproj" />
+    <Project Path="Payments.Application/Payments.Application.csproj" />
+    <Project Path="Payments.Domain/Payments.Domain.csproj" />
+    <Project Path="Payments.Infrastructure/Payments.Infrastructure.csproj" />
+  </Folder>
+</Solution>
