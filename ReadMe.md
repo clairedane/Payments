@@ -1,4 +1,4 @@
-# Payments API – Take-Home Submission
+# Payments API
 
 ## Assumptions
 - `ReferenceID` is used as the idempotency key to prevent duplicate payments.  
@@ -25,3 +25,4 @@
 - **Stored Procedures vs ORM (Entity Framework)**: SPs provide deterministic SQL control, but less automatic mapping and migration support.  
 - **Synchronous Payment Processing**: Easier to implement and test; asynchronous background processing could improve scalability.  
 - **Indexes on Status and CreatedDate**: Improves query performance for reporting and status-based queries; minor storage and maintenance overhead.
+
