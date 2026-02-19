@@ -51,17 +51,18 @@ This service provides internal payment processing for trusted integrations. It e
 
 ## Example Request 
 
+```
 POST /payments
 { 
   "ReferenceID": "REF123456",
   "Amount": 150.00,
   "Currency": "USD",
 }
-
+```
 ---
 
 ## Example Response
-
+```
 POST /payments
 {
   "paymentGuid": "17ab16cf-aa67-4aff-b49d-1dc93ee74d09",
@@ -69,13 +70,13 @@ POST /payments
   "status": 1,
   "message": "Payment processed successfully"
 }
-
+```
 ---
 
 ## Database Schema
 
 Payments Table:
-
+```
 PaymentID INT IDENTITY(1,1) PRIMARY KEY
 PaymentGuid UNIQUEIDENTIFIER UNIQUE
 ReferenceID NVARCHAR(50) UNIQUE
@@ -84,12 +85,13 @@ Currency CHAR(3) CHECK (LEN(Currency) = 3)
 Status NVARCHAR(20) CHECK (Status IN ('Pending', 'Success', 'Failed'))
 CreatedDate DATETIME2 DEFAULT SYSUTCDATETIME()
 UpdatedDate DATETIME2 NULL
-
+```
 ---
 
 ## Security
 
 - JWT authentication required for all endpoints.
 - Idempotency enforced via ReferenceID to prevent duplicate payments.
+
 
 
