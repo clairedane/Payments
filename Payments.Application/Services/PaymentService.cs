@@ -16,20 +16,42 @@ namespace Payments.Application.Services
         {
             _repository = repository;
         }
-        public async Task<PaymentResponse?> GetPaymentByReferenceIDAsync(string referenceID)
+        public async Task<IEnumerable<PaymentDetails>> GetAllPaymentsAsync()
+        {
+            var payments = await _repository.GetAllAsync(); 
+
+            var paymentDetailsList = payments.Select(payment => new PaymentDetails
+            {
+                PaymentID = payment.PaymentID,
+                PaymentGuid = payment.PaymentGuid,
+                ReferenceID = payment.ReferenceID,
+                Amount = payment.Amount,
+                Currency = payment.Currency,
+                Status = payment.Status,
+                CreatedDate = payment.CreatedDate,
+                UpdatedDate = payment.UpdatedDate
+            }).ToList();
+
+            return paymentDetailsList;
+        }
+
+        public async Task<PaymentDetails?> GetPaymentByReferenceIDAsync(string referenceID)
         {
             var payment = await _repository.GetByReferenceIDAsync(referenceID);
             if (payment == null) return null;
 
-            return new PaymentResponse
+            return new PaymentDetails
             {
+                PaymentID = payment.PaymentID,
                 PaymentGuid = payment.PaymentGuid,
                 ReferenceID = payment.ReferenceID,
+                Amount = payment.Amount,
+                Currency = payment.Currency,
                 Status = payment.Status,
-                Message = "Payment retrieved successfully"
+                CreatedDate = payment.CreatedDate,
+                UpdatedDate = payment.UpdatedDate
             };
         }
-
 
         public async Task<PaymentResponse> ProcessPaymentAsync(PaymentRequest request)
         {

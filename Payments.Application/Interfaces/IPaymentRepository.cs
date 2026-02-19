@@ -8,6 +8,7 @@ namespace Payments.Application.Interfaces
 {
     public interface IPaymentRepository
     {
+        Task<IEnumerable<Payment?>> GetAllAsync();
         Task<Payment?> GetByReferenceIDAsync(string referenceID);
         Task<int> InsertAsync(Payment payment);
         Task UpdateStatusAsync(int paymentId, PaymentStatus status);

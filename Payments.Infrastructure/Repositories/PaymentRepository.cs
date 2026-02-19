@@ -20,6 +20,16 @@ namespace Payments.Infrastructure.Repositories
             _connectionString = config.GetConnectionString("DefaultConnection")!;
         }
 
+        public async Task<IEnumerable<Payment?>> GetAllAsync()
+        {
+            using var con = new SqlConnection(_connectionString);
+
+            return await con.QueryAsync<Payment>(
+                "Payments_Select",
+                commandType: CommandType.StoredProcedure
+            );
+        }
+
         public async Task<Payment?> GetByReferenceIDAsync(string referenceID)
         {
             using var con = new SqlConnection(_connectionString);

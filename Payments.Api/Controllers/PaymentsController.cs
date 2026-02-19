@@ -19,6 +19,13 @@ namespace Payments.Api.Controllers
             _service = service;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<PaymentDetails>>> GetAllPayments()
+        {
+            var payments = await _service.GetAllPaymentsAsync();
+            return Ok(payments);
+        }
+
         [HttpGet("{referenceID}")]
         public async Task<IActionResult> GetPayment(string referenceID)
         {
