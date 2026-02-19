@@ -1,5 +1,8 @@
 # Payments API
 
+## Overview
+This service provides internal payment processing for trusted integrations. It ensures secure, idempotent handling of payment requests, with JWT authentication enforced for all endpoints. Payment processing is simulated; no real payment gateway integration is included.
+
 ## Assumptions
 - `ReferenceID` is used as the idempotency key to prevent duplicate payments.  
 - Payment processing is simulated; no real payment gateway integration is included.  
@@ -25,4 +28,68 @@
 - **Stored Procedures vs ORM (Entity Framework)**: SPs provide deterministic SQL control, but less automatic mapping and migration support.  
 - **Synchronous Payment Processing**: Easier to implement and test; asynchronous background processing could improve scalability.  
 - **Indexes on Status and CreatedDate**: Improves query performance for reporting and status-based queries; minor storage and maintenance overhead.
+
+---
+
+## Getting Started
+1. Clone the repo
+2. Set up the database
+3. Configure `appsettings.json` with DB connection and JWT settings
+4. Run the API
+
+---
+
+## API Endpoints
+
+| Method | Endpoint                  | Description            |
+|--------|---------------------------|------------------------|
+| POST   | /auth/login               | Create a token         |
+| POST   | /payments                 | Create a new payment   |
+| GET    | /payments/{ReferenceID}   | Retrieve a payment     |
+
+---
+
+## Example Request 
+
+POST /payments
+{ 
+  "ReferenceID": "REF123456",
+  "Amount": 150.00,
+  "Currency": "USD",
+}
+
+---
+
+## Example Response
+
+POST /payments
+{
+  "paymentGuid": "17ab16cf-aa67-4aff-b49d-1dc93ee74d09",
+  "referenceID": "55111100-e29b-41d4-a716-446655440103",
+  "status": 1,
+  "message": "Payment processed successfully"
+}
+
+---
+
+## Database Schema
+
+Payments Table:
+
+PaymentID INT IDENTITY(1,1) PRIMARY KEY
+PaymentGuid UNIQUEIDENTIFIER UNIQUE
+ReferenceID NVARCHAR(50) UNIQUE
+Amount DECIMAL(18,2) CHECK (Amount > 0)
+Currency CHAR(3) CHECK (LEN(Currency) = 3)
+Status NVARCHAR(20) CHECK (Status IN ('Pending', 'Success', 'Failed'))
+CreatedDate DATETIME2 DEFAULT SYSUTCDATETIME()
+UpdatedDate DATETIME2 NULL
+
+---
+
+## Security
+
+- JWT authentication required for all endpoints.
+- Idempotency enforced via ReferenceID to prevent duplicate payments.
+
 
